@@ -63,6 +63,12 @@ instances:
   webRo2:
     <<: *webRo1
 
+  webRo3:
+    <<: *webRo1
+    
+  webRo4:
+    <<: *webRo1
+
   ltmWebRO:
     <<: *LtmWeb 
     serverPool:
