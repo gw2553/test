@@ -63,12 +63,6 @@ instances:
   webRo2:
     <<: *webRo1
 
-  webGl1: &webGl1
-    <<: *WebSrvTier 
-    dataCenter: GL 
-    maintWin: *mwB 
-
-
   ltmWebRO:
     <<: *LtmWeb 
     serverPool:
