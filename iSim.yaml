@@ -1,11 +1,90 @@
 ---
- 
-#Created on 10/01/2015 11:52   
 
-app:
+#Created on 08/18/2015 16:42
+
+app: &app
+  appFuctionType: interactive  
+  appName: CDW           # App name - e.g. business objects 
+  businessUnit: ISG      # Name of bisiness unit - e.g. ISG-BIA 
+  eccP1Restore: yes      # yes | no
+  envType: prod           # prod|tpt|test|dev 
+  operationalHours: 24x7  # 24x7|9-5 
+  recoveryTier: 1      # 0-9 
+  recoveryDescr: hot standby     # Description of DR approach 
+  recoveryPrimary: GL  # GL | RO
+  priContact: icsAdmins        # Primary application contact email group (not individuals) 
+  secContact: icsAdmins        # Primary application contact email group (not individuals) 
 
 templates:
 
+  MaintWindows: 
+      A: &mwA         # Maintenance windows
+        day: sat          # mon|tue|wed|thu|fri|sat|sun 
+        week: 1        # 1-4 
+        window: 2200      # 02:00|06:00|10:00|14:00|18:00|22:00 
+
+      B: &mwB         # Maintenance windows
+        day: sat         # mon|tue|wed|thu|fri|sat|sun 
+        week: 2        # 1-4 
+        window: 2200      # 02:00|06:00|10:00|14:00|18:00|22:00 
+
+
+  GtmWeb: &GtmWeb
+    type: is.network.f5.gtm
+    failover: auto        # auto|manual 
+    failback: auto        # auto|manual  
+
+  LtmWeb: &LtmWeb
+    type: is.network.f5.ltm
+    distribution: round-robin     # round-robin 
+    network_area: MPN             # MPN | DMZ 
+    persistance: cookie           # none|cookie|sourceIP
+    port: 443                     # Numeric - port number 
+    service: https                # http|https|tcp 
+
+  WebSrvTier: &WebSrvTier 
+    app: *app
+    type: is.server.win.2012R2.vm
+    size: s             # s|m 
+    network_area: MPN   # MPN | DMZ 
+    security: icsadmins          # Group to add to local admins 
+    packages:           # list of packages.
+      - oracleClient11GR2
+
+#instances
+
 instances:
 
+  webRo1: &webRo1
+    <<: *WebSrvTier
+    dataCenter: RO
+    maintWin: *mwA 
+    
+
+  webGl1: &webGl1
+    <<: *WebSrvTier 
+    dataCenter: GL 
+    maintWin: *mwB 
+
+
+  ltmWebRO:
+    <<: *LtmWeb 
+    serverPool:
+      - webRo1
+      - webRo2
+
+  ltmWebGL:
+    <<: *LtmWeb
+    serverPool:
+      - webGl1
+      - webGl2
+
+  gtmWeb:
+    <<: *GtmWeb
+    ltmPool:
+      - ltmWebRO
+      - ltmWebGL
+
+
 ...
+
