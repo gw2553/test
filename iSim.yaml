@@ -60,6 +60,8 @@ instances:
     dataCenter: RO
     maintWin: *mwA 
     
+  webRo2:
+    <<: *webRo1
 
   webGl1: &webGl1
     <<: *WebSrvTier 
