@@ -55,18 +55,21 @@ templates:
 
 instances:
 
-  webRo1: &webRo1
+  webRo11: &webRo1
     <<: *WebSrvTier
     dataCenter: RO
     maintWin: *mwA 
     
-  webRo2:
+  webRo12:
     <<: *webRo1
 
-  webRo3:
+  webRo13:
     <<: *webRo1
     
-  webRo4:
+  webRo14:
+    <<: *webRo1
+    
+  webRo15:
     <<: *webRo1
 
   ltmWebRO:
