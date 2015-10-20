@@ -3,7 +3,7 @@
 #Created on 08/18/2015 16:42
 
 app: &app       
-  appFuctionType: interactive    
+  appFuctionType: interactive     
   appName: CDW           # App name - e.g. business objects 
   businessUnit: ISG      # Name of bisiness unit - e.g. ISG-BIA 
   eccP1Restore: yes      # yes | no
