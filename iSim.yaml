@@ -2,7 +2,7 @@
 
 #Created on 08/18/2015 16:42
 
-app: &app      
+app: &app       
   appFuctionType: interactive   
   appName: CDW           # App name - e.g. business objects 
   businessUnit: ISG      # Name of bisiness unit - e.g. ISG-BIA 
